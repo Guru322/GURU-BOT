@@ -1,17 +1,20 @@
-FROM quay.io/gurusensei/gurubhay:latest
+FROM node:21 AS builder
 
-RUN addgroup -g 10014 choreo && \
-    adduser  --disabled-password  --no-create-home --uid 10014 --ingroup choreo choreouser
+WORKDIR /app
 
-RUN git clone https://github.com/Guru322/GURU-Ai /home/appuser/guru \
-    && chown -R appuser:appuser /home/appuser/guru
-
-WORKDIR /home/appuser/guru/
-
+COPY package*.json ./
 RUN npm install --platform=linuxmusl
 
+COPY . .
+
+RUN apt-get update && apt-get install -y ffmpeg imagemagick webp
+
+FROM node:21-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app .
+
 EXPOSE 5000
-
-USER 10014
-
-CMD ["npm", "start"]
+CMD [ "npm", "start" ]
