@@ -50,7 +50,6 @@
         "@xct007/frieren-scraper": "*",
         "@xct007/tiktok-scraper": "*",
         "acrcloud": "^1.4.0",
-        "api-dylux": "^1.6.9",
         "aptoide-scraper": "^1.0.1",
         "awesome-phonenumber": "^3.4.0",
         "axios": "^1.4.0",
